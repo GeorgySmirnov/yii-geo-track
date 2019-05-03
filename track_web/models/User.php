@@ -3,31 +3,31 @@
 namespace app\models;
 
 use yii\db\ActiveRecord;
+use yii\web\IdentityInterface;
 
-class User extends ActiveRecord
+class User extends ActiveRecord implements IdentityInterface
 {
     public static function tableName()
     {
         return '{{%user}}';
     }
 
-    public static function create(?string $telephone, ?string $pass, ?string $guid) :User
+    public static function create(?string $telephone = null, ?string $pass = null, ?string $guid = null) :User
     {
         $user = new User();
 
-        if ($telephone)
-        {
+        if ($telephone) {
             $user->telephone = $telephone;
         }
 
-        if ($pass)
-        {
+        if ($pass) {
             $user->pass = Yii::$app->getSecurity()->generatePasswordHash($pass);
         }
 
-        if ($guid)
-        {
+        if ($guid) {
             $user->guid = $guid;
+        } else {
+            $user->guid = bin2hex(\Yii::$app->security->generateRandomKey(16));
         }
 
         $user->save();
@@ -41,5 +41,42 @@ class User extends ActiveRecord
             ['guid', 'match', 'pattern' => '/^[0-9a-f]{32}$/i'],
             ['telephone', 'match', 'pattern' => '/^7\d{10}$/'],
         ];
+    }
+
+
+    public static function findIdentity($guid)
+    {
+        return User::findOne(['guid' => $guid]);
+    }
+
+    public function getId()
+    {
+        return $this->guid;
+    }
+
+    public static function findIdentityByAccessToken($token, $type = null)
+    {
+        return null;
+    }
+
+    public function getAuthKey()
+    {
+        return $this->auth_key;
+    }
+
+    public function validateAuthKey($authKey)
+    {
+        return $this->getAuthKey() === $authKey;
+    }
+
+    public function beforeSave($insert)
+    {
+        if (parent::beforeSave($insert)) {
+            if ($this->isNewRecord) {
+                $this->auth_key = \Yii::$app->security->generateRandomString();
+            }
+            return true;
+        }
+        return false;
     }
 }

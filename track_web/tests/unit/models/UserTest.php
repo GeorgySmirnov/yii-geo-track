@@ -42,4 +42,18 @@ class UserTest extends \Codeception\Test\Unit
         $user->telephone = $invalidTelephone;
         $this->assertFalse($user->validate('telephone'));
     }
+
+    public function testImplementIdentityInterface()
+    {
+        $user = User::create('71234567890', '');
+        $this->assertTrue($user->validate());
+        
+        $this->assertEquals($user->guid, $guid = $user->getId());
+
+        $this->assertInstanceOf(User::class, User::findIdentity($guid));
+        $this->assertEquals($user->id, User::findIdentity($guid)->id);
+
+        $this->assertRegExp('/^[A-Za-z0-9_-]+$/', $authKey = $user->getAuthKey());
+        $this->assertTrue($user->validateAuthKey($authKey));
+    }
 }
