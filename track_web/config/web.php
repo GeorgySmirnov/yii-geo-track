@@ -54,6 +54,9 @@ $config = [
             'class' => 'yii\web\DbSession',
             'sessionTable' => 'session', 
         ],
+        'formatter' => [
+            'datetimeFormat' => 'php:' . DateTime::ISO8601,
+        ],
     ],
     'params' => $params,
 ];

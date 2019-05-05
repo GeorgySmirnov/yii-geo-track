@@ -33,6 +33,9 @@ return [
             'class' => 'yii\web\DbSession',
             'sessionTable' => 'session', 
         ],
+        'formatter' => [
+            'datetimeFormat' => 'php:' . DateTime::ISO8601,
+        ],
         'request' => [
             'cookieValidationKey' => 'test',
             'enableCsrfValidation' => false,
