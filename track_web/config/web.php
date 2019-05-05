@@ -50,6 +50,10 @@ $config = [
             'rules' => [
             ],
         ],
+        'session' => [
+            'class' => 'yii\web\DbSession',
+            'sessionTable' => 'session', 
+        ],
     ],
     'params' => $params,
 ];

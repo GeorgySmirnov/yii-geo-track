@@ -29,6 +29,10 @@ return [
             'identityClass' => 'app\models\User',
             'enableSession' => true,
         ],
+        'session' => [
+            'class' => 'yii\web\DbSession',
+            'sessionTable' => 'session', 
+        ],
         'request' => [
             'cookieValidationKey' => 'test',
             'enableCsrfValidation' => false,
