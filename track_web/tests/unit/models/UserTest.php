@@ -56,4 +56,13 @@ class UserTest extends \Codeception\Test\Unit
         $this->assertRegExp('/^[A-Za-z0-9_-]+$/', $authKey = $user->getAuthKey());
         $this->assertTrue($user->validateAuthKey($authKey));
     }
+
+    public function testCanAuthenticateUser()
+    {
+        $this->assertInstanceOf(User::class, $user = User::authenticate('70000000000', 'password'));
+        $this->assertEquals('00000000000000000000000000000000', $user->guid);
+
+        $this->assertNull(User::authenticate('70000000000', 'wrong_password'));
+        $this->assertNull(User::authenticate('79999999999', 'password'));
+    }
 }

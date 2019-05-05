@@ -22,10 +22,12 @@ return [
             'basePath' => __DIR__ . '/../web/assets',
         ],
         'urlManager' => [
-            'showScriptName' => true,
+            'enablePrettyUrl' => true,
+            'showScriptName' => false,
         ],
         'user' => [
             'identityClass' => 'app\models\User',
+            'enableSession' => true,
         ],
         'request' => [
             'cookieValidationKey' => 'test',

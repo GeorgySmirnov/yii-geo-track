@@ -43,6 +43,15 @@ class User extends ActiveRecord implements IdentityInterface
         ];
     }
 
+    public static function authenticate(string $telephone, string $pass): ?User
+    {
+        if ($user = User::findOne(['telephone' => $telephone])) {
+            if (\Yii::$app->getSecurity()->validatePassword($pass, $user->pass)) {
+                return $user;
+            }
+        }
+        return null;
+    }
 
     public static function findIdentity($guid)
     {
