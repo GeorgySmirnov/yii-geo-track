@@ -64,4 +64,24 @@ class UserController extends Controller
             ],
         ]);
     }
+
+    public function actionLastPosition($guid)
+    {
+        if (!$user = User::findIdentity($guid))
+        {
+            throw new NotFoundHttpException();
+        }
+
+        if (!$position = $user->getLastPosition())
+        {
+            return $this->asJson(null);
+        }
+
+        return $this->asJson([
+            'longitude' => $position->longitude,
+            'latitude' => $position->latitude,
+            'time' => $position->time,
+            'distanceToYekaterinburg' => $position->distanceToYekaterinburg,
+        ]);
+    }
 }

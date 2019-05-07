@@ -35,4 +35,36 @@ class Position extends ActiveRecord
     {
         return \Yii::$app->formatter->asDatetime($this->time);
     }
+
+    public function getDistanceToYekaterinburg(): float
+    {
+        $cityLat = 56.8575;
+        $cityLon = 60.6125;
+
+        return $this->haversine($cityLat, $this->latitude, $cityLon, $this->longitude);
+    }
+
+
+    /*
+     * Calculate distance betwen two points on Earth
+     * using haversine formula.
+     */ 
+    private function haversine(float $lat1, float $lat2, float $lon1, float $lon2): float
+    {
+        // Earth radius in meters
+        $earthRadius = 6371008;
+
+        // deltas of latitude/longitude in radians
+        $dLat = deg2rad($lat2 - $lat1);
+        $dLon = deg2rad($lon2 - $lon1);
+
+        // apply haversine formula
+        $havLat = sin($dLat/2) * sin($dLat/2);
+        $havLon = sin($dLon/2) * sin($dLon/2);
+        $h = $havLat + cos(deg2rad($lat1)) * cos(deg2rad($lat2)) * $havLon;
+        $radianDistance = 2 * asin(sqrt($h));
+        $distance = $earthRadius * $radianDistance;
+	
+        return $distance;
+    }
 }

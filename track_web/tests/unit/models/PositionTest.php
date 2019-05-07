@@ -74,4 +74,14 @@ class PositionTest extends \Codeception\Test\Unit
         $position->time = 'abc';
         $this->assertFalse($position->validate('time'));
     }
+
+    public function testCanCalculateDistanceToYekaterinburg()
+    {
+        $position = new Position();
+
+        $position->latitude = 56.8575;
+        $position->longitude = 60.6125;
+
+        $this->assertEquals(0, $position->distanceToYekaterinburg);
+    }
 };

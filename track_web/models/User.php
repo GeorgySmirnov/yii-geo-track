@@ -112,4 +112,9 @@ class User extends ActiveRecord implements IdentityInterface
 
         return $position->save();
     }
+
+    public function getLastPosition(): ?Position
+    {
+        return $this->getPositions()->orderBy('time DESC')->one();
+    }
 }

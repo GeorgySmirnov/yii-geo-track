@@ -27,6 +27,7 @@ return [
             'rules' => [
                 'GET,HEAD back/users' => 'user/index',
                 'GET,HEAD back/users/<guid>/positions' => 'user/index-positions',
+                'GET,HEAD back/users/<guid>/last-position' => 'user/last-position',
             ],
         ],
         'user' => [
