@@ -13,7 +13,7 @@ class PositionTest extends \Codeception\Test\Unit
         $pos->user_id = User::findOne(['telephone' => '70000000000'])->id;
         $pos->longitude = 30;
         $pos->latitude = 30;
-        $pos->time = date(\DateTime::ISO8601);
+        $pos->isoTime = $time = date(\DateTime::ISO8601);
 
         $this->assertTrue($pos->save());
 
@@ -24,6 +24,7 @@ class PositionTest extends \Codeception\Test\Unit
 
         $this->assertInstanceOf(Position::class, $new_pos);
         $this->assertEquals($pos->id, $new_pos->id);
+        $this->assertEquals($time, $new_pos->isoTime);
     }
     
     public function testCanValidateFields()
@@ -62,6 +63,8 @@ class PositionTest extends \Codeception\Test\Unit
 
         // time
         $position->time = '2019-05-05T18:37:56+0500';
+        $this->assertTrue($position->validate('time'));
+        $position->time = '2019-05-05 18:37:56';
         $this->assertTrue($position->validate('time'));
 
         $position->time = '2019-05-05T18:37:56';
