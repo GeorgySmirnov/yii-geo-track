@@ -84,4 +84,37 @@ class UserController extends Controller
             'distanceToYekaterinburg' => $position->distanceToYekaterinburg,
         ]);
     }
+
+    public function actionDelete($guid)
+    {
+        if (!$user = User::findIdentity($guid))
+        {
+            throw new NotFoundHttpException();
+        }
+
+        $user->deleted = true;
+
+        $result = $user->save();
+
+        return $this->asJson(['success' => $result]);
+    }
+
+    public function actionRestore($guid)
+    {
+        if (!$user = User::find()->where(['guid' => $guid])->one())
+        {
+            throw new NotFoundHttpException();
+        }
+
+        if (!$user->deleted)
+        {
+            return $this->asJson(['success' => false, 'msg' => 'User is not deleted!']);
+        }
+
+        $user->deleted = false;
+
+        $result = $user->save();
+
+        return $this->asJson(['success' => $result]);
+    }
 }

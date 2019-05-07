@@ -28,6 +28,8 @@ return [
                 'GET,HEAD back/users' => 'user/index',
                 'GET,HEAD back/users/<guid>/positions' => 'user/index-positions',
                 'GET,HEAD back/users/<guid>/last-position' => 'user/last-position',
+                'DELETE back/users/<guid>' => 'user/delete',
+                'GET,HEAD back/restore-user/<guid>' => 'user/restore',
             ],
         ],
         'user' => [

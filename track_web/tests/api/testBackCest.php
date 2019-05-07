@@ -40,4 +40,25 @@ class testBackCest
         $I->seeResponseContains('"longitude":5,"latitude":5,"time":"2019-05-05 12:00:05"');
         $I->seeResponseContains('"distanceToYekaterinburg":75');
     }
+
+    public function canDeleteAndRestoreUsers(ApiTester $I)
+    {
+        $I->haveHttpHeader("Accept", "application/json");
+        $I->sendGET('back/users/00000000000000000000000000000000/last-position');
+        $I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);
+        
+        $I->sendDELETE('back/users/00000000000000000000000000000000');
+        $I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);
+        $I->seeResponseContains('"success":true');
+
+        $I->sendGET('back/users/00000000000000000000000000000000/last-position');
+        $I->seeResponseCodeIs(\Codeception\Util\HttpCode::NOT_FOUND);
+
+        $I->sendGET('back/restore-user/00000000000000000000000000000000');
+        $I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);
+        $I->seeResponseContains('"success":true');
+
+        $I->sendGET('back/users/00000000000000000000000000000000/last-position');
+        $I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);
+    }
 }
