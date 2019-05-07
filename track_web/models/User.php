@@ -5,6 +5,8 @@ namespace app\models;
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
 
+use app\models\Position;
+
 class User extends ActiveRecord implements IdentityInterface
 {
     public static function tableName()
@@ -87,5 +89,17 @@ class User extends ActiveRecord implements IdentityInterface
             return true;
         }
         return false;
+    }
+
+    public function insertPosition(float $longitude, float $latitude, string $time): bool
+    {
+        $position = new Position();
+
+        $position->user_id = $this->id;
+        $position->longitude = $longitude;
+        $position->latitude = $latitude;
+        $position->time = $time;
+
+        return $position->save();
     }
 }

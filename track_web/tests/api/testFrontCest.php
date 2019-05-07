@@ -43,4 +43,21 @@ class testFrontCest
         $I->sendGET('front/logout');
         $I->seeResponseCodeIs(\Codeception\Util\HttpCode::FORBIDDEN);
     }
+
+    public function canInsertNewPosition(ApiTester $I)
+    {
+        // login
+        $I->haveHttpHeader("Accept", "application/json");
+        $I->sendPOST('front/login', ['telephone' => '70000000000', 'pass' => 'password']);
+        $I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);
+
+        $I->sendPOST('front/insert-position', [
+            'longitude' => 0,
+            'latitude' => 0,
+            'time' => date(\DateTime::ISO8601),
+        ]);
+        $I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);
+        $I->seeResponseIsJson();
+        $I->seeResponseContains('"success":true');
+    }
 }

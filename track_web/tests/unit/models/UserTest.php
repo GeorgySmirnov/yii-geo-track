@@ -3,6 +3,7 @@
 namespace tests\unit\models;
 
 use app\models\User;
+use app\models\Position;
 
 class UserTest extends \Codeception\Test\Unit
 {
@@ -64,5 +65,22 @@ class UserTest extends \Codeception\Test\Unit
 
         $this->assertNull(User::authenticate('70000000000', 'wrong_password'));
         $this->assertNull(User::authenticate('79999999999', 'password'));
+    }
+
+    public function canInsertNewPosition()
+    {
+        $user = User::findOne(['telephone' => '70000000000']);
+
+        $numOfPositions = count(Position::find(['user_id' => $user->id]));
+        
+        $timestamp  = time();
+        
+        $this->assertTrue($user->insertPosition(0, 0, date(\DateTime::ISO8601, $time)));
+
+        $this->assertEquals($numOfPositions + 1, count(Position::find(['user_id' => $user->id])));
+        $this->assertInstanceOf(
+            Position::class,
+            Position::findOne(['user_id' => $user->id, 'time' => date('Y-m-d H:i:s', $time)])
+        );
     }
 }

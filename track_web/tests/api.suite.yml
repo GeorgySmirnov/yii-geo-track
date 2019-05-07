@@ -1,6 +1,10 @@
 actor: ApiTester
 modules:
     enabled:
+      - Db:
+          dsn: 'mysql:host=db;dbname=geo_track'
+          user: 'webuser'
+          password: 'webpass'
       - REST:
           url: /
           depends: Yii2

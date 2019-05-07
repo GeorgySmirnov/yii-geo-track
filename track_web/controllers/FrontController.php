@@ -13,7 +13,7 @@ class FrontController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['login', 'logout'],
+                'only' => ['login', 'logout', 'insert-position'],
                 'rules' => [
                     [
                         'allow' => true,
@@ -23,6 +23,12 @@ class FrontController extends Controller
                     [
                         'allow' => true,
                         'actions' => ['logout'],
+                        'roles' => ['@'],
+                    ],
+                    [
+                        'allow' => true,
+                        'actions' => ['insert-position'],
+                        'verbs' => ['POST'],
                         'roles' => ['@'],
                     ],
                 ],
@@ -51,5 +57,18 @@ class FrontController extends Controller
     {
         \Yii::$app->user->logout();
         return $this->asJson(['success' => true]);
+    }
+
+    public function actionInsertPosition()
+    {
+        $longitude = \Yii::$app->request->post('longitude') ?: '';
+        $latitude = \Yii::$app->request->post('latitude') ?: '';
+        $time = \Yii::$app->request->post('time') ?: '';
+
+        $user = \Yii::$app->user->identity;
+
+        $result = $user->insertPosition(floatval($longitude), floatval($latitude), $time);
+
+        return $this->asJson(['success' => $result]);
     }
 }
