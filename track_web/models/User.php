@@ -14,6 +14,11 @@ class User extends ActiveRecord implements IdentityInterface
         return '{{%user}}';
     }
 
+    public static function find()
+    {
+        return parent::find()->where(['deleted' => false]);
+    }
+        
     public function extraFields()
     {
         return ['positions'];
@@ -50,6 +55,7 @@ class User extends ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
+            ['deleted', 'boolean'],
             ['guid', 'match', 'pattern' => '/^[0-9a-f]{32}$/i'],
             ['telephone', 'match', 'pattern' => '/^7\d{10}$/'],
         ];
