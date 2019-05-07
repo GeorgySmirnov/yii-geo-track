@@ -26,6 +26,7 @@ return [
             'showScriptName' => false,
             'rules' => [
                 'GET,HEAD back/users' => 'user/index',
+                'GET,HEAD back/users/<guid>/positions' => 'user/index-positions',
             ],
         ],
         'user' => [
