@@ -14,6 +14,16 @@ class User extends ActiveRecord implements IdentityInterface
         return '{{%user}}';
     }
 
+    public function extraFields()
+    {
+        return ['positions'];
+    }
+
+    public function getPositions()
+    {
+        return $this->hasMany(Position::className(), ['user_id' => 'id']);
+    }
+
     public static function create(?string $telephone = null, ?string $pass = null, ?string $guid = null) :User
     {
         $user = new User();

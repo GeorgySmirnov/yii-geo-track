@@ -48,6 +48,7 @@ $config = [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                'GET,HEAD back/users' => 'user/index',
             ],
         ],
         'session' => [

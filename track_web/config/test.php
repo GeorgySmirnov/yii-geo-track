@@ -24,6 +24,9 @@ return [
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
+            'rules' => [
+                'GET,HEAD back/users' => 'user/index',
+            ],
         ],
         'user' => [
             'identityClass' => 'app\models\User',
