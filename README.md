@@ -45,7 +45,7 @@ docker exec -it geo-track_web_1 yii migrate/fresh --interactive 0
 
 ### API
 
-Front API доступно по адресу `lokalhost/front`. API предоставляет следующие endpoints:
+Front API доступно по адресу `localhost/front`. API предоставляет следующие endpoints:
 
 URL | описание
 -- | --
@@ -53,7 +53,7 @@ POST /login | Логин пользователя по полям 'telephone'/'p
 POST /insert-position | Добавление текущей координаты. Требуемые поля: 'longitude','latitude' - float, 'time' - ISO8601
 GET /logout | Логаут и закрытие сессии
 
-Back API доступно по адресу `lokalhost/back`. Никаких методов аутентификации не реализованно. API предоставляет следующие endpoints:
+Back API доступно по адресу `localhost/back`. Никаких методов аутентификации не реализованно. API предоставляет следующие endpoints:
 
 URL | описание
 -- | --
